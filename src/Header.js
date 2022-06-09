@@ -40,7 +40,7 @@ export function Header(props) {
           borderRadius: "5px",
         }}
       >
-        <p>Max Score: 20</p>
+        <p>Max Score: {props.maxScore}</p>
         <p>Best Score: {props.bestScore}</p>
         <p>Current Score: {props.scoreboard}</p>
       </div>

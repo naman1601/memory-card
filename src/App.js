@@ -6,6 +6,7 @@ import { Header } from "./Header";
 const App = () => {
   const [scoreboard, setScoreboard] = useState(0);
   const [bestScore, setBestScore] = useState(0);
+  const maxScore = 30;
 
   const increaseScore = () => {
     setScoreboard(scoreboard + 1);
@@ -21,8 +22,13 @@ const App = () => {
 
   return (
     <div className="App">
-      <Header bestScore={bestScore} scoreboard={scoreboard} />
+      <Header
+        bestScore={bestScore}
+        maxScore={maxScore}
+        scoreboard={scoreboard}
+      />
       <Cards
+        numCards={maxScore}
         increaseScore={increaseScore}
         checkBestscore={checkBestscore}
         setScoreboard={setScoreboard}

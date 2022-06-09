@@ -1,21 +1,32 @@
 import React, { useState, useEffect } from "react";
-import { charData } from "./charData";
+import { getPokemon } from "./pokemonData";
 
 const Cards = (props) => {
   const [clickedCards, setClickedCards] = useState([]);
-  const randomCards = charData;
+  const [pokemonCards, setPokemonCards] = useState([]);
 
-  function shuffle() {
-    for (let i = randomCards.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [randomCards[i], randomCards[j]] = [randomCards[j], randomCards[i]];
-    }
-    console.log("shuflled");
-  }
+  const fetchPokemon = async (numCards) => {
+    const pokemon = await getPokemon(numCards);
+    setPokemonCards(pokemon);
+  };
 
   useEffect(() => {
-    shuffle();
-  });
+    fetchPokemon(props.numCards);
+  }, []);
+
+  function shuffle() {
+    let temporaryPokemonCards = [...pokemonCards];
+
+    for (let i = temporaryPokemonCards.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [temporaryPokemonCards[i], temporaryPokemonCards[j]] = [
+        temporaryPokemonCards[j],
+        temporaryPokemonCards[i],
+      ];
+    }
+
+    setPokemonCards(temporaryPokemonCards);
+  }
 
   function checkForPoint(e) {
     if (!clickedCards.includes(Number(e.target.closest(".card").id))) {
@@ -29,6 +40,8 @@ const Cards = (props) => {
       props.resetScore();
       setClickedCards([]);
     }
+
+    shuffle();
   }
 
   return (
@@ -42,7 +55,7 @@ const Cards = (props) => {
         cursor: "pointer",
       }}
     >
-      {randomCards.map((item) => {
+      {pokemonCards.map((item) => {
         return (
           <div
             onClick={(e) => {
